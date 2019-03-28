@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MSConference.Domain.Entities.Guest>
+
+@{
+    ViewBag.Title = "Goście";
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Zapisani goście
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.GuestLastName)</th>
+                <th>@Html.DisplayNameFor(model => model.GuestFirstName)</th>
+                <th>@Html.DisplayNameFor(model => model.GuestMiddleName)</th>
+                <th>@Html.DisplayNameFor(model => model.GuestEmail)</th>
+                <th></th>
+                <th></th>
+            </tr>
+            @if (Model.Count() == 0)
+            {
+                <tr><td colspan="4" class="text-center">Brak użytkowników</td></tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.GuestLastName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.GuestFirstName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.GuestMiddleName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.GuestEmail)</td>
+                        <td>@Html.ActionLink("Edytuj", "Edit", new { id = item.GuestID }, new { @class = "btn btn-primary btn-xs" })</td>
+                        <td>
+                            @using (Html.BeginForm("Delete", "Admin", new { id = item.GuestID }))
+                            {
+                                @Html.Hidden("guestId", item.GuestID)
+                                <input type="submit"
+                                       class="btn btn-danger btn-xs"
+                                       value="Usuń" />
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        @Html.ActionLink("Dodaj nowego gościa", "Create", null, new { @class = "btn btn-success" })
+    </div>
+</div>
