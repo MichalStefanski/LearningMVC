@@ -1,0 +1,102 @@
+﻿@model MSConference.Domain.Entities.Guest
+
+@{
+    if (Model.GuestEmail == null)
+    {
+        ViewBag.Title = "Tworzenie nowego użytkownika";
+    }
+    else
+    {
+        ViewBag.Title = "Edycja";
+    }
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@if (Model.GuestEmail == null)
+{
+    <h2>Tworzenie nowego użytkownika</h2>
+}
+else
+{
+    <h2>Edycja - @Model.GuestFirstName @Model.GuestLastName</h2>
+}
+
+
+@using (Html.BeginForm("EditGuest", "Admin"))
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <ul class="nav nav-pills">
+            <li class="active"><a data-toggle="pill" href="#EditGuest">Edycja - Gość</a></li>
+            <li><a data-toggle="pill" href="#EditContact">Edycja - Kontakt</a></li>
+            <li><a data-toggle="pill" href="#EditBill">Edycja - Rezerwacja</a></li>
+            <li><a data-toggle="pill" href="#EditPlan">Edycja - Konferencja</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="EditGuest" class="tab-pane fade in active">
+                <div class="form-horizontal">
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.GuestID)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.GuestLastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.GuestLastName, new { htmlAttributes = new { @class = "form-control", @style = "width:50% !important" } })
+                            @Html.ValidationMessageFor(model => model.GuestLastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.GuestFirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.GuestFirstName, new { htmlAttributes = new { @class = "form-control", @style = "width:50% !important" } })
+                            @Html.ValidationMessageFor(model => model.GuestFirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.GuestMiddleName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.GuestMiddleName, new { htmlAttributes = new { @class = "form-control", @style = "width:50% !important" } })
+                            @Html.ValidationMessageFor(model => model.GuestMiddleName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.GuestEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.GuestEmail, new { htmlAttributes = new { @class = "form-control", @style = "width:50% !important" } })
+                            @Html.ValidationMessageFor(model => model.GuestEmail, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.GuestSex, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.GuestSex, new[] {
+                                new SelectListItem() {Text = "Kobieta", Value = "F"},
+                                new SelectListItem() {Text = "Męszczyzna", Value = "M"}
+                                }, "Wybierz płeć", new { @class = "form-control", @style = "width:50% !important" })
+                            @Html.ValidationMessageFor(model => model.GuestSex, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Zapisz" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+            <div id="EditContact" class="tab-pane fade">
+                gsghshfffgjgfjgh
+            </div>
+            <div id="EditBill" class="tab-pane fade">sgdg</div>
+            <div id="EditPlan" class="tab-pane fade">gsdgsgsgsg</div>
+        </div>
+    </div>
+        }
+
+        <div>
+            @Html.ActionLink("Powrót do Listy", "Index", null, new { @class = "btn btn-success" })
+        </div>

@@ -69,16 +69,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\IBillRepository.cs" />
-    <Compile Include="Abstract\IContactRepository.cs" />
-    <Compile Include="Abstract\IGuestRepository.cs" />
-    <Compile Include="Concrete\EFBillRepository.cs" />
-    <Compile Include="Concrete\EFContactRepository.cs" />
+    <Compile Include="Abstract\IConferenceRepository.cs" />
     <Compile Include="Concrete\EfDbContext.cs" />
-    <Compile Include="Concrete\EFGuestRepository.cs" />
-    <Compile Include="Entities\Bill.cs" />
-    <Compile Include="Entities\Contact.cs" />
-    <Compile Include="Entities\Guest.cs" />
+    <Compile Include="Concrete\EFTableRepository.cs" />
+    <Compile Include="Entities\Tables.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

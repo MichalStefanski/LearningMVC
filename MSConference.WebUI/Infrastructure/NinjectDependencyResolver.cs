@@ -28,7 +28,8 @@ namespace MSConference.WebUI.Infrastructure
         {
             kernel.Bind<IGuestRepository>().To<EFGuestRepository>();
             kernel.Bind<IContactRepository>().To<EFContactRepository>();
-            kernel.Bind<IBillRepository>().To<EFBillRepository>();
+            kernel.Bind<IQRCodeRepository>().To<EFQRCodeRepository>();
+            //kernel.Bind<IBillRepository>().To<EFBillRepository>();
         }
     }
 }

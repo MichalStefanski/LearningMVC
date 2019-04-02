@@ -31,7 +31,7 @@
                         <td>@Html.DisplayFor(modelItem => item.GuestFirstName)</td>
                         <td>@Html.DisplayFor(modelItem => item.GuestMiddleName)</td>
                         <td>@Html.DisplayFor(modelItem => item.GuestEmail)</td>
-                        <td>@Html.ActionLink("Edytuj", "Edit", new { id = item.GuestID }, new { @class = "btn btn-primary btn-xs" })</td>
+                        <td>@Html.ActionLink("Edytuj", "EditGuest", new { id = item.GuestID }, new { @class = "btn btn-primary btn-xs" })</td>
                         <td>
                             @using (Html.BeginForm("Delete", "Admin", new { id = item.GuestID }))
                             {

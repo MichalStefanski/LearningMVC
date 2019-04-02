@@ -13,14 +13,29 @@
     <script src="~/Scripts/jquery-1.9.1.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery-1.9.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <div class="navbar navbar-inverse" role="navigation">
+        <a class="navbar-brand" href="#">Konferencja MS 2019</a>
+
+    </div>
     <div>
         @if (TempData["message"] != null)
         {
             <div class="alert alert-success">@TempData["message"]</div>
         }
-        @RenderBody()
+    </div>
+    <div class="row panel">
+        <div id="categories" class="col-xs-3">
+            
+        </div>
+        <div class="col-xs-8">
+            @RenderBody()
+        </div>
     </div>
 </body>
 </html>

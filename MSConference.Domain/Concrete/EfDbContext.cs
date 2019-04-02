@@ -7,6 +7,6 @@ namespace MSConference.Domain.Concrete
     {
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-        public DbSet<Bill> Bills { get; set; }
+        public DbSet<QRCode> QRCodes { get; set; }
     }
 }
