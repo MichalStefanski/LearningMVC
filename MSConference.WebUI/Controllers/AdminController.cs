@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using MSConference.Domain.Abstract;
 using MSConference.Domain.Concrete;
 using MSConference.Domain.Entities;
+using MSConference.WebUI.ViewModels;
 
 namespace MSConference.WebUI.Controllers
 {
@@ -13,7 +14,7 @@ namespace MSConference.WebUI.Controllers
         private IGuestRepository guestRepository;
         private IContactRepository contactRepository;
         private IQRCodeRepository qrcodeRepository;
-
+         
         public AdminController(IGuestRepository repoG, IContactRepository repoC, IQRCodeRepository repoQ)
         {
             guestRepository = repoG;
@@ -22,88 +23,104 @@ namespace MSConference.WebUI.Controllers
         }
 
         public ActionResult Index()
-        {
-            EfDbContext ef = new EfDbContext();
-            List<Guest> MyGuests = ef.Guests.ToList();
-            return View(MyGuests);
+        {            
+            return View(guestRepository.Guests);
         }
-
-        public PartialViewResult Menu()
-        {
-            return PartialView();
-        }
-
-        [HttpGet]
+        
         public ActionResult EditGuest(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Guest guest = guestRepository.Guests.FirstOrDefault(p => p.GuestID == id);
+
+            Guest guest = guestRepository.Guests.FirstOrDefault(g => g.GuestID == id);
+            Contact contact = contactRepository.Contacts.FirstOrDefault(c => c.ContactID == id);
+
             if (guest == null)
             {
                 return HttpNotFound();
             }
-            return View(guest);
-        }
 
+            TableViewModel tableView = new TableViewModel
+            {
+                GetGuest = new GuestViewModel
+                {
+                    GuestID = guest.GuestID,
+                    GuestLastName = guest.GuestLastName,
+                    GuestFirstName = guest.GuestFirstName,
+                    GuestMiddleName = guest.GuestMiddleName,
+                    GuestEmail = guest.GuestEmail,
+                    GuestSex = guest.GuestSex
+                },
+
+                GetContact = new ContactViewModel
+                {
+                    GuestID = guest.GuestID,
+                    ContactID = contact.ContactID,
+                    PostalCode = contact.PostalCode,
+                    City = contact.City,
+                    Street = contact.Street,
+                    HouseNumber = contact.HouseNumber,
+                    PhoneNumber = contact.PhoneNumber
+                }
+            };      
+
+            return View(tableView);
+        }
+           
         [HttpPost]
-        public ActionResult EditGuest(Guest guest)
-        {
+        public ActionResult EditGuest(TableViewModel _model)
+        {            
             if (ModelState.IsValid)
             {
-                
+                Guest guest = new Guest
+                {
+                    GuestID = _model.GetGuest.GuestID,
+                    GuestLastName = _model.GetGuest.GuestLastName,
+                    GuestFirstName = _model.GetGuest.GuestFirstName,
+                    GuestMiddleName = _model.GetGuest.GuestMiddleName,
+                    GuestEmail = _model.GetGuest.GuestEmail,
+                    GuestSex = _model.GetGuest.GuestSex
+                };
+                Contact contact = new Contact
+                {
+                    ContactID = _model.GetContact.ContactID,
+                    GuestID = _model.GetContact.GuestID,
+                    PostalCode = _model.GetContact.PostalCode,
+                    City = _model.GetContact.City,
+                    Street = _model.GetContact.Street,
+                    HouseNumber = _model.GetContact.HouseNumber,
+                    PhoneNumber = _model.GetContact.PhoneNumber
+                };
+
                 guestRepository.SaveGuest(guest);
                 qrcodeRepository.CreateQRCode(guest);
-                TempData["message"] = string.Format("Zapisano {0} {1}", guest.GuestFirstName, guest.GuestLastName);
+                contactRepository.SaveContact(contact, guest);
+
+                TempData["message"] = string.Format("Zapisano {0} {1}", _model.GetGuest.GuestFirstName, _model.GetGuest.GuestLastName);
                 return RedirectToAction("EditGuest/" + guest.GuestID);
             }
             else
             {
-                return View(guest);
+                return View("Index");
             }
-        }
-
-        [HttpGet]
-        public ActionResult EditContact(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Contact contact = contactRepository.Contacts.FirstOrDefault(p => p.GuestID == id);
-            if (contact == null)
-            {
-                return HttpNotFound();
-            }
-            return View(contact);
-        }
-
-        [HttpPost]
-        public ActionResult EditContact(Contact contact, Guest guest)
-        {
-            if (ModelState.IsValid)
-            {
-                contactRepository.SaveContact(contact);
-                TempData["message"] = string.Format("Zapisano {0} {1}", guest.GuestFirstName, guest.GuestLastName);
-                return RedirectToAction("EditGuest/" + contact.GuestID);
-            }
-            else
-            {
-                return View(contact);
-            }
-        }
+        }       
 
         public ActionResult Create()
         {
-            return View("EditGuest", new Guest());
-        }
+            return View("EditGuest", new TableViewModel()
+            {
+                GetContact = new ContactViewModel(),
+                GetGuest = new GuestViewModel()
+            });
+        }        
 
         [HttpPost]
         public ActionResult Delete(int guestId)
-        {            
-            QRCode deleteQRCode = qrcodeRepository.DeleteQRCode(guestId);
+        {
+            Contact deletedContact = contactRepository.DeleteContact(guestId);
+            QRCode deletedQRCode = qrcodeRepository.DeleteQRCode(guestId);
             Guest deletedGuest = guestRepository.DeleteGuest(guestId);
             if (deletedGuest != null)
             {

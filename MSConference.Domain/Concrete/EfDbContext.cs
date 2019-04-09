@@ -5,8 +5,15 @@ namespace MSConference.Domain.Concrete
 {
     public class EfDbContext : DbContext
     {
+        public EfDbContext() : base("EfDbContext")
+        {
+
+        }
+
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<QRCode> QRCodes { get; set; }
     }
+
+
 }

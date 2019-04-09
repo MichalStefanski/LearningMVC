@@ -10,13 +10,14 @@ namespace MSConference.Domain.Abstract
         void SaveGuest(Guest guest);
 
         Guest DeleteGuest(int guestId);
+        
     }
 
     public interface IContactRepository
     {
         IEnumerable<Contact> Contacts { get; }
 
-        void SaveContact(Guest guest);
+        void SaveContact(Contact contact, Guest guest);
 
         Contact DeleteContact(int guestId);
     }

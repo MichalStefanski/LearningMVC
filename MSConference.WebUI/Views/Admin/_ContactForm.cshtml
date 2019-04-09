@@ -1,0 +1,60 @@
+﻿@model MSConference.WebUI.ViewModels.TableViewModel
+@{ Layout = null; }
+@*@using (Html.BeginForm("ContactForm", "Admin"))
+{*@
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <p></p>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.GetContact.ContactID)
+        @Html.HiddenFor(model => model.GetContact.GuestID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GetContact.PostalCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GetContact.PostalCode, new { htmlAttributes = new { @class = "form-control", @style = "width:50% !important" } })
+                @Html.ValidationMessageFor(model => model.GetContact.PostalCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GetContact.City, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GetContact.City, new { htmlAttributes = new { @class = "form-control", @style = "width:50% !important" } })
+                @Html.ValidationMessageFor(model => model.GetContact.City, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GetContact.Street, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GetContact.Street, new { htmlAttributes = new { @class = "form-control", @style = "width:50% !important" } })
+                @Html.ValidationMessageFor(model => model.GetContact.Street, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GetContact.HouseNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GetContact.HouseNumber, new { htmlAttributes = new { @class = "form-control", @style = "width:50% !important" } })
+                @Html.ValidationMessageFor(model => model.GetContact.HouseNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GetContact.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GetContact.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @style = "width:50% !important" } })
+                @Html.ValidationMessageFor(model => model.GetContact.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>*@
+    </div>
+
+
