@@ -15,10 +15,20 @@ namespace MSConference.Domain.Entities
     {
         [Key]
         public int GuestID { get; set; }
+
+        [Display(Name = "Nazwisko")]
         public string GuestLastName { get; set; }
+
+        [Display(Name = "Piersze Imię")]
         public string GuestFirstName { get; set; }
+
+        [Display(Name = "Drugie Imię")]
         public string GuestMiddleName { get; set; }
+
+        [Display(Name = "Email")]
         public string GuestEmail { get; set; }
+
+        [Display(Name = "Sex")]
         public string GuestSex { get; set; }
 
         //public virtual Contact Contact { get; set; }
@@ -45,6 +55,7 @@ namespace MSConference.Domain.Entities
         [Key]
         public int PrelectionID { get; set; }
         public string PrelectionTitle { get; set; }
+        public char PrelectionDay { get; set; }
         public TimeSpan PrelectionStart { get; set; }
         public int PrelectionTime { get; set; }
         public int PrelectionCapacity { get; set; }

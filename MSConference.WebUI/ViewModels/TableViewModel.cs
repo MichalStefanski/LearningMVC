@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
+using MSConference.WebUI.Models;
 
 namespace MSConference.WebUI.ViewModels
 {
@@ -35,15 +36,15 @@ namespace MSConference.WebUI.ViewModels
         public string GuestMiddleName { get; set; }
 
         [MaxLength(50)]
-        [Required(ErrorMessage = "Proszę podać adres email.")]
-        [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Proszę podać prawidłowy adres e-mail.")]
         [Display(Name = "Email")]
+        [Required(ErrorMessage = "Proszę podać adres email.")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Proszę podać prawidłowy adres e-mail.")]
+        [Remote("DuplicateGuest", "Admin", AdditionalFields = "GuestID", HttpMethod = "Post", ErrorMessage = "Ten adres Email jest już zajęty")]        
         public string GuestEmail { get; set; }
 
         [MaxLength(1)]
         [Required(ErrorMessage = "Proszę podać płeć.")]
-        public string GuestSex { get; set; }
-        
+        public string GuestSex { get; set; }        
     }
 
     public class ContactViewModel

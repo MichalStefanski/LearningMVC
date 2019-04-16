@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -93,7 +95,7 @@ namespace MSConference.WebUI.Controllers
                     HouseNumber = _model.GetContact.HouseNumber,
                     PhoneNumber = _model.GetContact.PhoneNumber
                 };
-
+                
                 guestRepository.SaveGuest(guest);
                 qrcodeRepository.CreateQRCode(guest);
                 contactRepository.SaveContact(contact, guest);
@@ -103,7 +105,7 @@ namespace MSConference.WebUI.Controllers
             }
             else
             {
-                return View("Index");
+                return View("EditGuest", _model);
             }
         }       
 
@@ -126,7 +128,33 @@ namespace MSConference.WebUI.Controllers
             {
                 TempData["message"] = string.Format("Usunięto {0} {1}", deletedGuest.GuestFirstName, deletedGuest.GuestLastName);
             }
+            else
+            {
+                TempData["message"] = string.Format("Nie można usunąć {0} {1}", deletedGuest.GuestFirstName, deletedGuest.GuestLastName);
+            }
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult DuplicateGuest(TableViewModel _model)
+        {            
+            var isEqual = guestRepository.Guests.Any(x => x.GuestEmail == _model.GetGuest.GuestEmail);
+            
+            if (_model.GetGuest.GuestID == 0)
+            {
+                return Json(!isEqual, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var isTheSame = guestRepository.Guests.FirstOrDefault(x => x.GuestID == _model.GetGuest.GuestID).GuestEmail;
+                if (isTheSame == _model.GetGuest.GuestEmail)
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+
+                return Json(!isEqual, JsonRequestBehavior.AllowGet);
+            }
+                                   
         }
     }
 }
