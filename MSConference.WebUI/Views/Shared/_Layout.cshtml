@@ -25,7 +25,9 @@
     </div>
     <div class="row panel">
         <div id="categories" class="col-xs-3">
-
+            <p>@Html.ActionLink("Goście", "Index", null, new { @class = "btn btn-block btn-default btn-lg" })</p>
+            <p></p>
+            <p>@Html.ActionLink("Płatności", "Bills", null, new { @class = "btn btn-block btn-default btn-lg" })</p>
         </div>
         <div class="col-xs-8">
             @RenderBody()

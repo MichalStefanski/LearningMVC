@@ -21,8 +21,7 @@
         <ul class="nav nav-pills">
             <li class="active"><a data-toggle="pill" href="#EditGuest">Edycja - Gość</a></li>
             <li><a data-toggle="pill" href="#EditContact">Edycja - Kontakt</a></li>
-            <li><a data-toggle="pill" href="#EditBill">Edycja - Rezerwacja</a></li>
-            <li><a data-toggle="pill" href="#EditPlan">Edycja - Konferencja</a></li>
+            <li><a data-toggle="pill" href="#EditBooking">Edycja - Rezerwacja</a></li>
         </ul>
         <div class="tab-content">
             <div id="EditGuest" class="tab-pane fade in active">
@@ -35,13 +34,17 @@
                 @{ Html.RenderPartial("_ContactForm", Model);}
 
             </div>
-            <div id="EditBill" class="tab-pane fade">sgdg</div>
+            <div id="EditBooking" class="tab-pane fade">
+
+                @{  Html.RenderPartial("_BookingForm", Model);}
+
+            </div>
             <div id="EditPlan" class="tab-pane fade">gsdgsgsgsg</div>
         </div>
-    </div>
+    </div>   
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="submit" value="Zapisz" class="btn btn-primary" />
         </div>
     </div>
 }

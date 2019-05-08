@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using MSConference.Domain.Abstract;
 using MSConference.Domain.Entities;
@@ -86,7 +88,7 @@ namespace MSConference.Domain.Concrete
                 dbEntry.PhoneNumber = contact.PhoneNumber;
             }
             
-        context2.SaveChanges();
+            context2.SaveChanges();
         }        
 
         public Contact DeleteContact(int guestId)
@@ -101,7 +103,6 @@ namespace MSConference.Domain.Concrete
         }
     }
 
-    //QRCode Repository
     public class EFQRCodeRepository : IQRCodeRepository
     {
         private EfDbContext context3 = new EfDbContext();
@@ -116,10 +117,9 @@ namespace MSConference.Domain.Concrete
             QRCode dbEntry = context3.QRCodes.Find(guest.GuestID);
             if (dbEntry == null)
             {
-                QRCode qR = new QRCode();
-                qR.GuestID = guest.GuestID;
-                context3.QRCodes.Add(qR);
-                context3.SaveChanges();
+                EfDbContext efDb = new EfDbContext();
+                SqlParameter paramId = new SqlParameter("@GID", guest.GuestID);
+                int result = efDb.Database.ExecuteSqlCommand("SP_CreateQRCode @GID", paramId);
             }
         }
 
@@ -134,4 +134,128 @@ namespace MSConference.Domain.Concrete
             return dbEntry;
         }
     }       
+
+    public class EFBookingRepository : IBookingRepository
+    {
+        private EfDbContext context4 = new EfDbContext();
+
+        public IEnumerable<Booking> Bookings
+        {
+            get { return context4.Bookings; }
+        }
+
+        public void SaveBooking(Booking booking, Guest guest)
+        {
+            Booking dbEntry = context4.Bookings.Find(guest.GuestID);
+            if (dbEntry == null)
+            {
+                Booking newBooking = new Booking
+                {
+                    BookingID = guest.GuestID,
+                    GuestID = guest.GuestID,
+                    RoomType = booking.RoomType,
+                    Banquet = booking.Banquet,
+                    Activity = booking.Activity
+                };
+                context4.Bookings.Add(newBooking);
+            }
+            else if (dbEntry != null)
+            {
+                dbEntry.BookingID = booking.BookingID;
+                dbEntry.GuestID = booking.GuestID;
+                dbEntry.RoomType = booking.RoomType;
+                dbEntry.Banquet = booking.Banquet;
+                dbEntry.Activity = booking.Activity;
+            }
+
+            //EfDbContext efDb = new EfDbContext();
+            //int prep = efDb.Database.ExecuteSqlCommand("SP_ClearRooms");
+            //foreach (var item in context4.Bookings)
+            //{
+            //    SqlParameter paramId = new SqlParameter("@GID", item.GuestID);
+            //    int result = efDb.Database.ExecuteSqlCommand("SP_AssignPair @GID", paramId);
+            //}            
+
+            context4.SaveChanges();
+        }
+
+        public Booking DeleteBooking(int guestId)
+        {
+            Booking dbEntry = context4.Bookings.Find(guestId);
+            if (dbEntry != null)
+            {
+                EfDbContext efDb = new EfDbContext();
+                int prep = efDb.Database.ExecuteSqlCommand("SP_ClearRooms");
+                
+                context4.Bookings.Remove(dbEntry);
+                context4.SaveChanges();
+            }
+            return dbEntry;
+        }
+    }
+
+    public class EFPaymentRepository : IPaymentRepository
+    {
+        private EfDbContext context5 = new EfDbContext();
+
+        public IEnumerable<Payment> Payments
+        {
+            get { return context5.Payments; }
+        }
+
+        public void CreateBill(Guest guest)
+        {
+            string TimeToPay = "2019-05-12";
+            Payment dbEntry = context5.Payments.Find(guest.GuestID);
+            if (dbEntry == null)
+            {
+                Payment newPayment = new Payment()
+                {
+                    PaymentID = guest.GuestID,
+                    GuestID = guest.GuestID,
+                    PaidValue = 0,
+                    DateToBill = Convert.ToDateTime(TimeToPay),
+                    Notes = "Uzupełnić dane z przelewu"
+                };
+                context5.Payments.Add(newPayment);
+            }
+        }
+
+        public void CreateBill(int guest, Payment payment)
+        {
+            Payment dbEntry = context5.Payments.Find(guest);
+            if (dbEntry != null)
+            {
+                dbEntry.PaymentID = payment.PaymentID;
+                dbEntry.GuestID = payment.GuestID;
+                dbEntry.PaidValue = payment.PaidValue;
+                dbEntry.DateOfPayment = payment.DateOfPayment;
+                dbEntry.BankInfo = payment.BankInfo;
+                dbEntry.AccountInfo = payment.AccountInfo;
+                dbEntry.Notes = payment.Notes;
+            }
+            context5.SaveChanges();
+        }
+
+        public Payment DeletePayment(int guestId)
+        {
+            Payment dbEntry = context5.Payments.Find(guestId);
+            if (dbEntry != null & dbEntry.PaidValue==0)
+            {
+                context5.Payments.Remove(dbEntry);
+                context5.SaveChanges();
+            }
+            return dbEntry;
+        }
+    }
+
+    public class EFPaymentsViewRepository : IPaymentsViewRepository
+    {
+        private EfDbContext context6 = new EfDbContext();
+
+        public IEnumerable<PaymentsView> PaymentsViews
+        {
+            get { return context6.PaymentsViews; }
+        }
+    }
 }

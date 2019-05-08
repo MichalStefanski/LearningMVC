@@ -30,9 +30,6 @@ namespace MSConference.Domain.Entities
 
         [Display(Name = "Sex")]
         public string GuestSex { get; set; }
-
-        //public virtual Contact Contact { get; set; }
-        //public virtual QRCode QRCode { get; set; }
     }
 
     [Table("ContactsTest")]
@@ -73,4 +70,54 @@ namespace MSConference.Domain.Entities
 
         public virtual Guest Guest { get; set; }
     }    
+
+    [Table("BookingTest")]
+    public class Booking
+    {        
+        public int BookingID { get; set; }
+        [Key, ForeignKey("Guest")]
+        public int GuestID { get; set; }
+        public int RoomType { get; set; }
+        public bool Banquet { get; set; }
+        public int Activity { get; set; }
+
+        public virtual Guest Guest { get; set; }
+    }
+
+    [Table("PaymentsTest")]
+    public class Payment
+    {
+        public int PaymentID { get; set; }
+        [Key, ForeignKey("Guest")]
+        public int GuestID { get; set; }
+        public decimal BillValue { get; set; }
+        public decimal PaidValue { get; set; }
+        public DateTime? DateOfPayment { get; set; }
+        public DateTime DateToBill { get; set; }
+        public string BankInfo { get; set; }
+        public string AccountInfo { get; set; }
+        public int IsPaidFull { get; set; }
+        public decimal AmmountLeft { get; set; }
+        public string Notes { get; set; }
+
+        public virtual Guest Guest { get; set; }
+    }
+
+    [Table("PaymentsView")]
+    public class PaymentsView
+    {
+        [Key]
+        public int GuestID { get; set; }
+
+        [Display(Name = "Nazwisko")]
+        public string GuestLastName { get; set; }
+
+        [Display(Name = "Piersze Imię")]
+        public string GuestFirstName { get; set; }
+
+        public decimal PaidValue { get; set; }
+        public DateTime DateToBill { get; set; }
+        public int IsPaidFull { get; set; }
+        public string Notes { get; set; }
+    }
 }

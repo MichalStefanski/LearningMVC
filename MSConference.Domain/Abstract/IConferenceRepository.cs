@@ -30,8 +30,28 @@ namespace MSConference.Domain.Abstract
 
         QRCode DeleteQRCode(int guestId);
     }
-    //public interface IBillRepository
-    //{
-    //    IEnumerable<Bill> Bills { get; }
-    //}    
+    
+    public interface IBookingRepository
+    {
+        IEnumerable<Booking> Bookings { get; }
+
+        void SaveBooking(Booking booking, Guest guest);
+
+        Booking DeleteBooking(int guestId);
+    }
+
+    public interface IPaymentRepository
+    {
+        IEnumerable<Payment> Payments { get; }
+
+        void CreateBill(Guest guest);
+        void CreateBill(int guest, Payment payment);
+
+        Payment DeletePayment(int guestId);
+    }
+
+    public interface IPaymentsViewRepository
+    {
+        IEnumerable<PaymentsView> PaymentsViews { get; }
+    }
 }

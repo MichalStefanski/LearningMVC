@@ -160,6 +160,9 @@
     <Content Include="Views\Admin\EditGuest.cshtml" />
     <Content Include="Views\Admin\_GuestForm.cshtml" />
     <Content Include="Views\Admin\_ContactForm.cshtml" />
+    <Content Include="Views\Admin\_BookingForm.cshtml" />
+    <Content Include="Views\Admin\Bills.cshtml" />
+    <Content Include="Views\Admin\EditPayment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<MSConference.Domain.Entities.PaymentsView>
+
+@{
+    ViewBag.Title = "Bills";
+}
+
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Zapisani goście
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <tr>
+                <th>@Html.DisplayName("Gość")</th>
+                <th>@Html.DisplayName("Wpłata")</th>
+                <th>@Html.DisplayName("Termin płatności")</th>
+                <th>@Html.DisplayName("Zapłacone")</th>
+                <th>@Html.DisplayName("Notatki")</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.GuestFirstName @item.GuestLastName</td>
+                <td>@Html.DisplayFor(modelItem => item.PaidValue)</td>
+                <td>@Html.DisplayFor(modelItem => item.DateToBill)</td>
+                <td>
+                    @if (item.IsPaidFull == 1)
+                    {
+                        <span class="glyphicon glyphicon-ok"></span>
+                    }
+                    else
+                    {
+                        <span class="glyphicon glyphicon-remove"></span>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Notes)</td>
+                <td>@Html.ActionLink("Edytuj", "EditPayment", new { id = item.GuestID }, new { @class = "btn btn-primary btn-xs" })</td>
+                <td>
+                    @using (Html.BeginForm("ErasePayment", "Admin", new { id = item.GuestID }))
+                    {
+                        @Html.Hidden("guestId", item.GuestID)
+                        <input type="submit"
+                               class="btn btn-danger btn-xs"
+                               value="Usuń" />
+                    }
+                </td>
+            </tr>
+            }
+
+        </table>
+    </div>
+    <div class="panel-footer">
+        @Html.ActionLink("Dodaj nowego gościa", "Create", null, new { @class = "btn btn-success" })
+    </div>
+</div>

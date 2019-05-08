@@ -1,0 +1,43 @@
+﻿@model MSConference.WebUI.ViewModels.TableViewModel
+@{ Layout = null; }
+
+<div class="form-horizontal">
+    <p></p>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.GetBooking.BookingID)
+    @Html.HiddenFor(model => model.GetBooking.GuestID)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.GetBooking.RoomType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.GetBooking.RoomType, new[] {
+                new SelectListItem() {Text = "Brak zakwaterowania", Value = "9"},
+                new SelectListItem() {Text = "Pokój jednoosobowy", Value = "1"},
+                new SelectListItem() {Text = "Pokój dwuosobowy", Value = "2"}
+                }, "Wybierz formę zakwaterowania", new { @class = "form-control", @style = "width:50% !important" })
+            @Html.ValidationMessageFor(model => model.GetBooking.RoomType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.GetBooking.Banquet, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.GetBooking.Banquet, new[] {
+                new SelectListItem() {Text = "Tak", Value = "True"},
+                new SelectListItem() {Text = "Nie", Value = "False"}
+                }, new { @class = "form-control", @style = "width:50% !important" })
+            @Html.ValidationMessageFor(model => model.GetBooking.Banquet, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.GetBooking.Activity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.GetBooking.Activity, new[] {
+                new SelectListItem() {Text = "Scieżka 1", Value = "1"},
+                new SelectListItem() {Text = "Ścieżka 2", Value = "2"}
+                }, "Wybierz ścieżkę tematyczną", new { @class = "form-control", @style = "width:50% !important" })
+            @Html.ValidationMessageFor(model => model.GetBooking.Activity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

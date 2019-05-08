@@ -12,7 +12,9 @@ namespace MSConference.WebUI.ViewModels
         public GuestViewModel GetGuest { get; set; }
         public ContactViewModel GetContact { get; set; }
         public PlanViewModel GetPlan { get; set; }
+        public BookingViewModel GetBooking { get; set; }
         public QRCodeViewModel GetQRCode { get; set; }
+        public PaymentViewModel GetPayment { get; set; }
     }
 
     public class GuestViewModel
@@ -95,10 +97,71 @@ namespace MSConference.WebUI.ViewModels
         public int PrelectionSitsTaken { get; set; }
     }
 
+    public class BookingViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public int BookingID { get; set; }
+
+        [Key, ForeignKey("Guest")]
+        [HiddenInput(DisplayValue = false)]        
+        public int GuestID { get; set; }
+
+        [Required(ErrorMessage = "Proszę wybrać jedną z poniższych opcji.")]
+        [Display(Name = "Forma zakwaterowania")]
+        public int RoomType { get; set; }
+
+        [Required(ErrorMessage = "Proszę wybrać Tak lub Nie")]
+        [Display(Name = "Uczestnictwo w bankiecie")]
+        public bool Banquet { get; set; }
+
+        [Required(ErrorMessage = "Proszę wybrać jedną z ścieżek.")]
+        [Display(Name = "Ścieżka tematyczna")]
+        public int Activity { get; set; }
+    }
+
     public class QRCodeViewModel
     {
         [Key, ForeignKey("Guest")]
         public int GuestID { get; set; }
         public byte[] Code { get; set; }
     }
+
+    public class PaymentViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public int PaymentID { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        [Key, ForeignKey("Guest")]
+        public int GuestID { get; set; }
+
+        [Display(Name = "Kwota rachunku")]
+        public decimal BillValue { get; set; }
+
+        [Display(Name = "Wpłata")]
+        public decimal PaidValue { get; set; }
+
+        [Display(Name = "Data zapłaty")]
+        public DateTime? DateOfPayment { get; set; }
+
+        [Required(ErrorMessage = "Wprowadź ostateczny termin zapłaty")]
+        [Display(Name = "Termin płatności")]
+        public DateTime DateToBill { get; set; }
+
+        [Display(Name = "PIerwsze 8 cyfr BNR")]
+        public string BankInfo { get; set; }
+
+        [Display(Name = "Ostatnie 4 cyfry BNR")]
+        public string AccountInfo { get; set; }
+
+        [Display(Name = "Status Płatności")]
+        public int IsPaidFull { get; set; }
+
+        [Display(Name = "Pozostała kwota do zapłaty")]
+        public decimal AmmountLeft { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Notatki")]
+        public string Notes { get; set; }
+    }    
 }

@@ -13,11 +13,13 @@ namespace MSConference.Domain.Concrete
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
         //    modelBuilder.Types().Configure(t => t.MapToStoredProcedures());
-        //    modelBuilder.Conventions.Add(new CodeFirstStoreFunctions.FunctionsConvention<EfDbContext>("dbo"));
         //}
 
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<QRCode> QRCodes { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentsView> PaymentsViews { get; set; }
     }
 }
